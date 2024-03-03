@@ -1,5 +1,16 @@
 # luastuff
 
+Based on:
+
+[Steve's teacher - Full Lua Programming Crash Course - Beginner to Advanced](https://youtu.be/1srFmjt1Ib0?si=RbCqUL7kDe6ILXkh)
+
+[Lua.org](https://www.lua.org)
+
+Self experience
+ 
+
+
+
 - [luastuff](#luastuff)
   - [Printing and commenting](#printing-and-commenting)
   - [Data types](#data-types)
@@ -7,6 +18,10 @@
   - [Strings](#strings)
   - [Conditional statements](#conditional-statements)
   - [Loops](#loops)
+  - [User input](#user-input)
+  - [Tables](#tables)
+  - [Functions](#functions)
+  - [Co-Routines](#co-routines)
 
 
 ## Printing and commenting
@@ -131,6 +146,14 @@ string.gsub("Hello World", "o", "!")
 
 ## Conditional statements
 ```lua
+if something then
+    ...
+elseif somethingElse then
+    ...
+else
+    ...
+end
+
 --[[
     >
     <
@@ -145,4 +168,142 @@ string.gsub("Hello World", "o", "!")
 
 ## Loops
 ```lua
+-- Loop up
+for i = 1, 100, 1 do
+    print(i)
+end
+
+-- Loop down
+for i = 1, 100, -1 do
+    print(i)
+end
+
+-- Loop array
+local arr = {1,2,3,4,5,6}
+
+for i = 1, #arr do
+    print(arr[i])
+end
+
+-- While
+local count = 10
+
+while count > 0 do
+    print(count)
+    count = count - 1
+end
+
+-- Repeat until something happens, basically runs at least once compared to while
+local x = 1
+repeat
+    print(x)
+    x = x + 1
+until x > 10
+```
+
+## User input
+```lua
+local value = io.read()
+```
+
+## Tables
+```lua
+-- Table - container for values
+local arr = {1, 2, 3}
+print(arr) -- returns table:0x553 something, this is table address in ram
+
+-- to print the table values use index, indexes in lua start from 1
+print(arr[1])
+
+-- Sorting, function on how to sort is also passable
+table.sort(arr)
+
+-- Insert
+table.insert(arr, index, 1)
+
+-- Remove
+table.remove(arr, index)
+
+-- Concatenate
+local arr = {"a", "b", "c"}
+table.concat(arr, " ") -- printing results in "a b c"
+
+-- Multidimensional table - array in array
+local arr = {
+    {1,2,3},
+    {4,5,6},
+    {7,8,9}
+}
+print(arr[1][1]) -- 1
+
+-- Loop over multidimensional table
+for i = 1, #arr do
+    for j = 1, #arr[i] do
+        print(arr[i][j])
+    end
+end
+```
+
+## Functions
+```lua
+-- if its a local function, it can be accessed only from this file, but if it's a _G function then we can access it from any file
+-- we can also return multiple values at once
+local add10 = function (number)
+    local outcome = 10 + number
+    return number, outcome
+end
+
+local stored, output = add10(20)
+
+-- Recursion
+local function counter(number, end_num)
+    local count = number + 1
+    
+    if (count < end_num) then
+        return counter(count, end_num)
+    end
+    return count
+end
+
+print(counter(10,15))
+
+-- we can return a function
+local function counter()
+    local count = 0
+    return function()
+        count = count + 1
+        return count
+    end
+end
+
+local x = counter()
+print(x())
+
+-- Unspecified amount of arguments
+local function sum(...)
+    local sums = 0
+
+    for key, value in pairs({...}) do -- also loops over tables, {} - converts into a table 
+        print(key) -- index
+        print(value) -- value
+        sums = sums + value
+    end
+
+    --[[
+        We can also loop over the data like this:
+
+        for i = 1, #{...} do
+        end
+
+        But the pairs method also gives us the key
+    ]]
+
+    return sums
+end
+
+print(sum(1,2,3))
+```
+## Co-Routines
+```lua
+-- Basically a thread/async function
 ```
