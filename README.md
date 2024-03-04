@@ -2,7 +2,7 @@
 
 Based on:
 
-[Steve's teacher - Full Lua Programming Crash Course - Beginner to Advanced](https://youtu.be/1srFmjt1Ib0?si=RbCqUL7kDe6ILXkh)
+[Steve's teacher - Full Lua Programming Crash Course - Beginner to Advanced](https://youtu.be/1srFmjt1Ib0?si=Zmektywkjj52tqsT)
 
 [Lua.org](https://www.lua.org)
 
@@ -22,6 +22,9 @@ Self experience
   - [Tables](#tables)
   - [Functions](#functions)
   - [Co-Routines](#co-routines)
+  - [Files](#files)
+  - [OS module](#os-module)
+  - [Modules](#modules)
 
 
 ## Printing and commenting
@@ -306,4 +309,144 @@ print(sum(1,2,3))
 ## Co-Routines
 ```lua
 -- Basically a thread/async function
+local routine_1 = coroutine.create(function)
+
+routine_1 = coroutine.create(
+    function ()
+        for i = 1, 10, 1 do
+            print("(Routine 1): " .. i)
+            if i == 5 then
+                coroutine.yield() -- Makes it wait
+            end
+        end
+    end
+)
+
+local routine_function = function()
+    for i = 11, 20, 1 do
+        print("(Routine 2): " .. i)
+    end
+end
+
+local routine_2 = coroutine.create(routine_function)
+
+coroutine.resume(routine_1)
+coroutine.resume(routine_2)
+print(coroutine.status(routine_1))
+coroutine.resume(routine_1)
+print(coroutine.status(routine_1))
+
+--[[
+    Status:
+        running - is running
+        suspended - is suspended or not started
+        normal - is active but not running
+        dead - has finished or stopped with error
+]]
+
+coroutine.resume(routine_1) -- Resumes/starts a routine
+
+-- Yield basically makes a pause for a running coroutine
+```
+
+## Files
+```lua
+-- sets the current output file
+io.output("test.txt")
+
+-- writes to said file
+io.write("abc")
+
+-- close said file
+io.close()
+
+-- set input file
+io.input("test.txt")
+
+-- reads 5 characters
+local file = io.read(5)
+
+-- possible to filter read, if the file had 88s written in it we would receive 88
+local file = io.read("*number")
+
+-- reads line by line
+local file = io.read("*line")
+
+-- read all
+local file = io.read("*all")
+
+-- open file and set it's mode
+local file = io.open("test.txt")
+
+--[[
+    Modes:
+        r - Read mode
+        w - Write mode
+        a - Append mode
+        r+ - Update mode, all previous data preserved
+        w+ - Update mode, all previous data erased
+        a+ - Append update mode, previous data preserved, writing only allowed at the end
+        rb - Read mode binary
+        wb - Write mode binary
+        ab - Append mode binary
+        r+b - Update mode, all previous data preserved binary
+        w+b - Update mode, all previous data erased binary
+        a+b - Append update mode, previous data preserved, writing only allowed at the end binary
+]]
+
+-- Another way to close the file
+file:close()
+
+-- Writes to file
+file:write("abc")
+```
+
+## OS module
+```lua
+-- time since 1970 in seconds
+os.time()
+
+-- from 1970 until specified date
+os.time(
+    year = 2000,
+    month = 10,
+    day = 1,
+    hour = 13,
+    min = 20,
+    sec = 10
+)
+
+-- gives time difference in seconds
+os.difftime(os.time(), past)
+
+-- gives current date
+os.date()
+
+-- get environment variable
+os.getenv("ENV_NAME")
+
+-- rename
+os.rename("file.txt", "new.xml")
+
+-- remove
+os.remove("file.txt")
+
+-- execute terminal commands, not reccomended
+os.execute("whoami")
+
+-- get execution time
+local start = os.clock()
+
+for i = 1, 1000 do
+    local x = 10
+end
+
+print(os.clock() - start)
+
+-- exit application
+os.exit()
+```
+
+## Modules
+```lua
 ```
