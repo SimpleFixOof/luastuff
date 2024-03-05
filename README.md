@@ -25,6 +25,7 @@ Self experience
   - [Files](#files)
   - [OS module](#os-module)
   - [Modules](#modules)
+  - [OOP (Object Oriented Programming)](#oop-object-oriented-programming)
 
 
 ## Printing and commenting
@@ -448,5 +449,23 @@ os.exit()
 ```
 
 ## Modules
+```lua
+-- Functions of module are called using module.function()
+-- Module returns a table to a user
+
+_G.test = {}
+
+-- Has to be a global function to use outside of this file
+function test.add(x, y)
+    return x + y
+end
+
+return test
+
+-- Module importing
+local mod = require("test")
+```
+
+## OOP (Object Oriented Programming)
 ```lua
 ```

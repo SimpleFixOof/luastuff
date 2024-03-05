@@ -68,7 +68,7 @@ print("Conver integer to string:")
 print(tostring(22))
 
 print("\n\n---Co-Routine---")
-routine_1 = coroutine.create(
+local routine_1 = coroutine.create(
     function ()
         for i = 1, 10, 1 do
             print("(Routine 1): " .. i)
@@ -93,4 +93,4 @@ print(coroutine.status(routine_1))
 coroutine.resume(routine_1)
 print(coroutine.status(routine_1))
 
-io.open("test.txt",)
+local file = io.open("test.txt","w")
