@@ -1,4 +1,4 @@
-# luastuff
+
 
 Based on:
 
@@ -11,21 +11,20 @@ Self experience
 
 
 
-- [luastuff](#luastuff)
-  - [Printing and commenting](#printing-and-commenting)
-  - [Data types](#data-types)
-  - [Math](#math)
-  - [Strings](#strings)
-  - [Conditional statements](#conditional-statements)
-  - [Loops](#loops)
-  - [User input](#user-input)
-  - [Tables](#tables)
-  - [Functions](#functions)
-  - [Co-Routines](#co-routines)
-  - [Files](#files)
-  - [OS module](#os-module)
-  - [Modules](#modules)
-  - [OOP (Object Oriented Programming)](#oop-object-oriented-programming)
+- [Printing and commenting](#printing-and-commenting)
+- [Data types](#data-types)
+- [Math](#math)
+- [Strings](#strings)
+- [Conditional statements](#conditional-statements)
+- [Loops](#loops)
+- [User input](#user-input)
+- [Tables](#tables)
+- [Functions](#functions)
+- [Co-Routines](#co-routines)
+- [Files](#files)
+- [OS module](#os-module)
+- [Modules](#modules)
+- [OOP (Object Oriented Programming)](#oop-object-oriented-programming)
 
 
 ## Printing and commenting
