@@ -25,6 +25,8 @@ Self experience
 - [OS module](#os-module)
 - [Modules](#modules)
 - [OOP (Object Oriented Programming)](#oop-object-oriented-programming)
+- [Metamethods](#metamethods)
+- [Using "classes" in lua](#using-classes-in-lua)
 
 
 ## Printing and commenting
@@ -467,4 +469,139 @@ local mod = require("test")
 
 ## OOP (Object Oriented Programming)
 ```lua
+local function Pet(name)
+    name = name or "Luis"
+    return {
+        name = name,
+        status = "Hungry",
+
+        feed = function(self)
+            self.status = "Full"
+        end
+    }
+end
+
+local cat = Pet("Oof")
+local cat2 = Pet()
+print(cat.name) -- Oof
+print(cat2.name) -- Luis
+
+print(cat.status) -- Hungry
+cat:feed()
+print(cat.status) -- Full
+
+
+-- Inheritance
+local function Dog(name, breed)
+    local dog = Pet(name)
+
+    dog.breed = breed
+    dog.loyalty = 0
+    
+    dog.isLoyal = function(self)
+        return self.loyalty >= 10
+    end
+
+    dog.feed = function(self)
+        self.status = "Full"
+        self.loyalty = self.loyalty + 5
+    end
+
+    dog.bark = function(self)
+        print("Woof")
+    end
+
+    return dog
+end
+
+local woofer = Dog("Dogger", "Poodle")
+
+woofer:feed() -- woofer.loyalty - 5
+
+print(woofer.breed) -- Poodle
+woofer:bark() -- "Woof"
+```
+
+## Metamethods
+```lua
+local function addTableValues(x,y)
+    return x.num + y.num
+end
+
+local tbl1 = {num = 50}
+local tbl2 = {num = 10}
+
+local ans = tbl1 + tbl2
+
+print(ans) -- Error
+
+local metatable = {
+    __add = addTableValues -- __add is the same as + symbol
+    __sub = function (x,y)
+        return x.num - y.num
+    end
+}
+
+setmetatable(tbl1, metatable)
+
+local ans2 = tbl1 + tbl2 -- 60
+local ans3 = tbl1 - tbl2 -- 40
+
+--[[
+    __add = +
+    __sub = -
+    __mul = *
+    __div = /
+    __mod = %
+    __pow = ^
+    __concat = ..
+    __len = #
+    __eq = ==
+    __lt = <
+    __le = <=
+    __gt = >
+    __ge = >=
+]]
+
+-- If we look at these as vectors
+local tbl1 = { x = 10, y = 20 }
+local tbl2 = { x = 5, y = 9 }
+
+local function addTableValues(v1, v2)
+    return {x = v1.x + v2.x, y= v1.y + v2.y}
+end
+
+local vector = tbl1 - tbl2
+print(vector.x, vector.y) -- x: 15 y: 29
+```
+## Using "classes" in lua
+```lua
+ParsedElement = {ai = nil, dataTitle = nil, data = nil, unit = nil}
+
+function ParsedElement:new(o, elementAi, elementDataTitle, elementType)
+    o = o or {}
+    setmetatable(o,self)
+    self.__index = self
+    self.ai = elementAi
+    self.dataTitle = elementDataTitle
+    if elementType == "S" then
+        self.data = ""
+    elseif elementType == "N" then
+        self.data = 0
+    elseif elementType == "D" then
+        self.data = ".."
+        self.data = "a"
+    else
+        self.data = ""
+    end
+    self.unit = ""
+    return o
+end
+
+elementToReturn = ParsedElement:new(nil, "a", "Super", 123)
+
+elementToReturn.ai = "something"
+elementToReturn.dataTitle = "a"
+elementToReturn.data = "c"
+elementToReturn.unit = "meters"
 ```
