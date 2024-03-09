@@ -27,6 +27,8 @@ Self experience
 - [OOP (Object Oriented Programming)](#oop-object-oriented-programming)
 - [Metamethods](#metamethods)
 - [Using "classes" in lua](#using-classes-in-lua)
+- [Try Catch in lua](#try-catch-in-lua)
+- [Using C api](#using-c-api)
 
 
 ## Printing and commenting
@@ -604,4 +606,70 @@ elementToReturn.ai = "something"
 elementToReturn.dataTitle = "a"
 elementToReturn.data = "c"
 elementToReturn.unit = "meters"
+```
+## Try Catch in lua
+```lua
+-- similar functionality can be achieved using pcall
+
+function test()
+    print(a[i]) -- a may not be a table
+end
+
+if (pcall(test)) then
+    -- all good
+else
+    -- error
+end
+
+-- can be also used like this
+local status, err = pcall(function() error({code=121})end)
+print(err.code) -- 121
+```
+
+## Using C api
+[Relevant examples](https://www.troubleshooters.com/codecorn/lua/lua_c_calls_lua.htm)
+```lua
+--- Calling a lua function from c
+lua_call (lua_State *L, int nargs, int nresults);
+
+-- in lua:
+a = f("how", t.x, 14)
+
+-- in c:
+lua_getglobal(L, "f") -- function to be called
+lua_pushliteral(L, "how") -- 1st argument
+lua_getglobal(L, "t") -- table to be indexed
+lua_getfield(L, -1, "x") -- push result of t.x ( 2nd arg )
+lua_remove(L, -2) -- Remove t from stack
+lua_pushinteger(L, 14) -- 3rd argument
+lua_call(L, 3, 1) -- call f with 3 arguments and 1 result
+lua_setglobal(L, "a") -- set global a
+
+-- lua file loading into c:
+lua_State *L; -- create state variable
+L = luaL_newstate();
+
+luaL_openlibs(L); -- load Lua libraries
+
+luaL_loadfile(L, "test.lua") -- load but dont run lua script file
+
+lua_pcall(
+	L, 
+	number_of_args, 
+	number_of_returns, 
+	errfunc_idx
+	); -- Priming run of the loaded Lua script to create the script's global variables
+
+--Pass all arguments to the Lua script on the stack
+
+lua_pcall(
+	L, 
+	number_of_args, 
+	number_of_returns, 
+	errfunc_idx
+	); -- Run the loaded Lua script
+
+--Retrieve the return from the Lua script
+
+lua_close(L); -- Close the Lua state variable
 ```
